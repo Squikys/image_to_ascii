@@ -2,30 +2,42 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"image/color"
+	"image/jpeg"
 	"image/png"
 	"os"
+	"strings"
 )
 
 func main() {
-	imageFile, err := os.Open("ubuntu.png")
+	args := os.Args
+	imageFile, err := os.Open(string(args[1]))
 	if err != nil {
 		panic(err)
 	}
 	defer imageFile.Close()
-
-	loadedImage, err := png.Decode(imageFile)
-	if err != nil {
-		panic(err)
+	var loadedImage image.Image
+	if strings.Contains(string(args[1]), ".jpeg") || strings.Contains(string(args[1]), ".jpg") {
+		loadedImage, err = jpeg.Decode(imageFile)
+		if err != nil {
+			panic(err)
+		}
+	} else if strings.Contains(string(args[1]), ".png") {
+		loadedImage, err = png.Decode(imageFile)
+		if err != nil {
+			panic(err)
+		}
 	}
 	bounds := loadedImage.Bounds()
 	height := bounds.Dy()
 	width := bounds.Dx()
-	fmt.Print(height, width)
+
 	x_temp := 0
 	y_temp := 0
 	x_ratio := 50
 	y_ratio := x_ratio * 1 / 2 * height / width
+
 	for y := 0; y < y_ratio; y++ {
 		for x := 0; x < x_ratio; x++ {
 			average := 0
@@ -44,7 +56,6 @@ func main() {
 			total := average
 
 			total = total / size
-			//fmt.Print(total)
 			mainpix := total
 			if mainpix <= 32 {
 				fmt.Printf(" ")
@@ -69,4 +80,5 @@ func main() {
 		x_temp = 0
 		fmt.Print("\n")
 	}
+
 }
