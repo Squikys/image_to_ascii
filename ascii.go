@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	imageFile, err := os.Open("pngegg.png")
+	imageFile, err := os.Open("ubuntu.png")
 	if err != nil {
 		panic(err)
 	}
@@ -24,10 +24,10 @@ func main() {
 	fmt.Print(height, width)
 	x_temp := 0
 	y_temp := 0
-	x_ratio := 100
-	y_ratio := x_ratio * height / width
-	for x := 0; x < 100; x++ {
-		for y := 0; y < 100; y++ {
+	x_ratio := 50
+	y_ratio := x_ratio * 1 / 2 * height / width
+	for y := 0; y < y_ratio; y++ {
+		for x := 0; x < x_ratio; x++ {
 			average := 0
 			size := 0
 			for j := y_temp; j < y_temp+height/y_ratio; j++ {
